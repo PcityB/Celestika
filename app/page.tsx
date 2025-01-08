@@ -4,13 +4,13 @@ import React, { useRef } from "react";
 import clsx from "clsx";
 import { Button } from "@nextui-org/button";
 import { useInView } from "framer-motion";
+import { Link } from "@nextui-org/link";
 
 import ServiceCards from "@/components/service-cards";
 import TestimonialsCarousel from "@/components/testimonials";
 import { fontWhisper } from "@/config/fonts";
 
 export default function Home() {
-
   const serviceRef = useRef(null);
   const isInServiceView = useInView(serviceRef);
 
@@ -46,20 +46,42 @@ export default function Home() {
         className="flex flex-col items-center min-h-[60dvh] pt-16"
         id="services"
       >
-        <h3 ref={serviceRef} className="text-3xl md:text-5xl font-bold">Our Services</h3>
+        <h3 ref={serviceRef} className="text-3xl md:text-5xl font-bold">
+          Our Services
+        </h3>
         <ServiceCards inView={isInServiceView} />
       </section>
-      <section className="flex flex-col items-center py-16 min-h-[60dvh]" id="testimonials">
+      <section
+        className="flex flex-col items-center py-16 min-h-[60dvh]"
+        id="testimonials"
+      >
         <h3 className="text-2xl mt-4 mb-14">What our users are saying...</h3>
         <TestimonialsCarousel />
         <div className="mt-24 text-center">
-          <h3 className="text-3xl mb-10">Ready to explore the Mystical Realms?</h3>
-          <Button radius="full" size="lg" className="bg-gradient-to-br from-purple-500 to-blue-500">
+          <h3 className="text-3xl mb-10">
+            Ready to explore the Mystical Realms?
+          </h3>
+          <Button
+            className="bg-gradient-to-br from-purple-500 to-blue-500"
+            radius="full"
+            size="lg"
+          >
             Start your journey
           </Button>
         </div>
       </section>
-      
+      <footer className="bg-neutral-800 border-t border-neutral-700">
+        <p className="text-center py-4">
+          <span className={clsx(fontWhisper.className, "text-2xl")}>
+            Mystical Realms
+          </span>{" "}
+          &copy; {new Date().getFullYear()}
+        </p>
+        <div className="text-center pb-4 space-x-4">
+          <Link href="/privacy">Privacy Policy</Link>
+          <Link href="/terms">Terms of Service</Link>
+        </div>
+      </footer>
     </React.Fragment>
   );
 }
