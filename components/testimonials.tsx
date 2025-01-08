@@ -5,44 +5,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import ReactStars from "react-stars";
 
-const testimonialsItems = [
-  {
-    name: "John Doe",
-    username: "@username1",
-    public_profile: "https://www.google.com",
-    avatar_url: "https://randomuser.me/api/port",
-    comment:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    rating: 5,
-  },
-  {
-    name: "Jane Doe",
-    username: "@username2",
-    public_profile: "https://www.google.com",
-    avatar_url: "https://randomuser.me/api/port",
-    comment:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    rating: 5,
-  },
-  {
-    name: "Jack Doe",
-    username: "@username3",
-    public_profile: "https://www.google.com",
-    avatar_url: "https://randomuser.me/api/port",
-    comment:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    rating: 5,
-  },
-  {
-    name: "Janet Doe",
-    username: "@username4",
-    public_profile: "https://www.google.com",
-    avatar_url: "https://randomuser.me/api/port",
-    comment:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    rating: 5,
-  },
-];
+import { testimonials as data } from "@/config/site";
 
 export default function TestimonialsCarousel() {
   const [emblaRef] = useEmblaCarousel(
@@ -55,14 +18,16 @@ export default function TestimonialsCarousel() {
   return (
     <div ref={emblaRef} className="embla overflow-hidden">
       <div className="embla__container flex">
-        {testimonialsItems.map((testimonial, index) => (
+        {data.map((testimonial, index) => (
           <div
             key={index}
-            className="embla__slide flex-[0_0_100%] lg:flex-[0_0_25%]"
+            className="embla__slide flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33%]"
           >
             <div className="bg-neutral-800 p-4 md:p-6 lg:mx-4 rounded-lg">
               <User
-                avatarProps={{ src: testimonial.avatar_url }}
+                avatarProps={{
+                  src: testimonial.avatar_url + "?u=" + testimonial.username,
+                }}
                 description={testimonial.username}
                 name={testimonial.name}
               />

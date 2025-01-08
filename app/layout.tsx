@@ -1,13 +1,12 @@
 import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
 import clsx from "clsx";
-import { Link } from "@nextui-org/link";
 
 import { Providers } from "./providers";
 
 import NavigationBar from "@/components/navigationbar";
 import { siteConfig } from "@/config/site";
-import { fontGothic, fontWhisper } from "@/config/fonts";
+import { fontGothic } from "@/config/fonts";
 
 export const metadata: Metadata = {
   title: {
@@ -36,12 +35,13 @@ export default function RootLayout({
     <html suppressHydrationWarning lang="en">
       <head />
       <body className={clsx("bg-background antialiased", fontGothic.className)}>
-        <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+        <Providers
+          themeProps={{ attribute: "class", defaultTheme: "new-dark" }}
+        >
           <NavigationBar />
           <main className="container mx-auto max-w-7xl px-2 md:px-6 flex-grow">
             {children}
           </main>
-          
         </Providers>
       </body>
     </html>

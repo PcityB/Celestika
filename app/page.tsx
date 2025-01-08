@@ -34,7 +34,7 @@ export default function Home() {
           </h2>
         </div>
         <Button
-          className="bg-gradient-to-br from-purple-500 to-blue-500"
+          className="theme-gradient"
           radius="full"
           size="md"
           onPress={handleGetStarted}
@@ -51,33 +51,28 @@ export default function Home() {
         </h3>
         <ServiceCards inView={isInServiceView} />
       </section>
-      <section
-        className="flex flex-col items-center py-16 min-h-[60dvh]"
-        id="testimonials"
-      >
-        <h3 className="text-2xl mt-4 mb-14">What our users are saying...</h3>
+      <section className="py-16 min-h-[60dvh] max-w-dvh" id="testimonials">
+        <h3 className="text-2xl text-center mt-4 mb-14">
+          What our users are saying...
+        </h3>
         <TestimonialsCarousel />
         <div className="mt-24 text-center">
           <h3 className="text-3xl mb-10">
             Ready to explore the Mystical Realms?
           </h3>
-          <Button
-            className="bg-gradient-to-br from-purple-500 to-blue-500"
-            radius="full"
-            size="lg"
-          >
+          <Button className="theme-gradient" radius="full" size="lg">
             Start your journey
           </Button>
         </div>
       </section>
-      <footer className="bg-neutral-800 border-t border-neutral-700">
+      <footer className="bg-neutral-800 border-t border-neutral-500">
         <p className="text-center py-4">
           <span className={clsx(fontWhisper.className, "text-2xl")}>
             Mystical Realms
           </span>{" "}
           &copy; {new Date().getFullYear()}
         </p>
-        <div className="text-center pb-4 space-x-4">
+        <div className="text-center pb-8 space-x-6">
           <Link href="/privacy">Privacy Policy</Link>
           <Link href="/terms">Terms of Service</Link>
         </div>
