@@ -2,12 +2,20 @@
 
 import { useEffect, useState, useRef, Fragment } from "react";
 import { Button } from "@nextui-org/button";
+import { Image } from "@nextui-org/image";
 import Moveable from "react-moveable";
 import clsx from "clsx";
 
-import { parseTranslateValue, extractRotateValue } from "@/utils";
+import {
+  parseTranslateValue,
+  extractRotateValue,
+  getCardImgPath,
+} from "@/utils";
+
+import { LocalStorageKeys } from "@/enums/storage.enums";
 
 import "@/styles/moveable-override.css";
+import EditorMenu from "./EditorMenu";
 
 export default function SpreadEditorV2() {
   const boundRef = useRef<HTMLDivElement>(null);
@@ -20,11 +28,13 @@ export default function SpreadEditorV2() {
       seq: number;
     }[]
   >([]);
-  const [_targetList, setTargetList] = useState<string[]>([]);
+  const [targetList, setTargetList] = useState<string[]>([]);
 
   //On Mount
   useEffect(() => {
-    const savedData = localStorage.getItem("spread_auto_save");
+    const savedData = localStorage.getItem(
+      LocalStorageKeys.spreadPositionsAutoSave,
+    );
 
     if (savedData) {
       setCards(JSON.parse(savedData));
@@ -33,7 +43,7 @@ export default function SpreadEditorV2() {
 
   // On Update
   useEffect(() => {
-    const list = cards.map((card) => card.id);
+    const list = cards.map((card) => `.${card.id}`);
 
     setTargetList(list);
   }, [cards]);
@@ -92,17 +102,23 @@ export default function SpreadEditorV2() {
     });
   };
 
+  const resetSpreadPositions = () => {
+    localStorage.removeItem(LocalStorageKeys.spreadPositionsAutoSave);
+    setCards([]);
+  };
+
   return (
     <div>
       <div>
-        <div>
-          <div className="container">
+        <div className="w-[400px] mx-auto">
+          <div className="container border my-2">
+            <EditorMenu />
             <div
               ref={boundRef}
               className={clsx(
                 "relative",
-                "w-[400px] h-[400px] mx-auto mt-4",
-                "border-2 border-primary bg-neutral-900"
+                "w-[400px] h-[400px] mx-auto",
+                "border-2 border-primary bg-neutral-700"
               )}
             >
               {cards.length > 0 &&
@@ -111,15 +127,20 @@ export default function SpreadEditorV2() {
                     <div
                       className={clsx(
                         `card ${card.id} override`,
-                        "w-[40px] h-[70px]",
-                        "bg-primary absolute cursor-move",
+                        "w-[40px] bg-primary",
+                        "cursor-move"
                       )}
                       id={card.id}
                       style={{
                         transform: `translate(${card.position}) rotate(${card.rotate})`,
                       }}
                     >
-                      {card.label}
+                      <Image
+                        alt="Card Back"
+                        className=""
+                        radius="none"
+                        src={getCardImgPath("card_back")}
+                      />
                     </div>
                     <Moveable
                       bounds={{
@@ -130,7 +151,7 @@ export default function SpreadEditorV2() {
                         position: "css",
                       }}
                       draggable={true}
-                      elementGuidelines={[".card"]}
+                      elementGuidelines={[...targetList]}
                       hideDefaultLines={true}
                       individualGroupable={true}
                       isDisplayGridGuidelines={true}
@@ -148,7 +169,7 @@ export default function SpreadEditorV2() {
                       onRender={(e) => {
                         if (e.cssText !== "") {
                           const positionData = e.cssText;
-                          const { x, y } = parseTranslateValue(positionData); // localStorage.setItem("spread_auto_save", )
+                          const { x, y } = parseTranslateValue(positionData);
                           const rotation = extractRotateValue(positionData);
                           const update = cards.map((c) =>
                             c.id === card.id
@@ -157,12 +178,12 @@ export default function SpreadEditorV2() {
                                   position: `${x}px, ${y}px`,
                                   rotate: `${rotation}deg`,
                                 }
-                              : c,
+                              : c
                           );
 
                           localStorage.setItem(
-                            "spread_auto_save",
-                            JSON.stringify(update),
+                            LocalStorageKeys.spreadPositionsAutoSave,
+                            JSON.stringify(update)
                           );
                         }
                       }}
@@ -173,10 +194,6 @@ export default function SpreadEditorV2() {
             </div>
           </div>
         </div>
-        <Button onPress={addCard}>Add</Button>
-        <Button>Save</Button>
-        <Button>Load</Button>
-        <Button>Reset</Button>
       </div>
     </div>
   );
