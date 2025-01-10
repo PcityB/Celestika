@@ -2,14 +2,21 @@ import "@/styles/legal.css";
 
 export default function Page() {
   return (
-    <article className="px-4 pb-16">
-      <h1 className="text-2xl text-center mb-2">Privacy Policy</h1>
-      <h2 className="text-center mb-6">Last Updated: January 7th 2025</h2>
+    <article className="px-4 pb-16" role="main">
+      <header>
+        <h1 className="text-2xl text-center mb-2" id="Privacy Policy">
+          Privacy Policy
+        </h1>
+        <p className="text-center mb-6">
+          <time dateTime="2025-01-07">Last Updated: January 7th 2025</time>
+        </p>
+      </header>
       <p>
         Welcome to Mystical Realms. We value your privacy and are committed to
         protecting your personal information. This Privacy Policy outlines how
         we collect, use, and disclose your information when you visit or make a
-        purchase from [www.mystical-realms.com] (“the Site”).
+        purchase from{" "}
+        <a href="https://www.mystical-realms.com">www.mystical-realms.com</a>.
       </p>
 
       <hr className="my-4" />
@@ -94,7 +101,7 @@ export default function Page() {
       <p>
         Cookies are small data files placed on your device. We use both session
         cookies (expire once you close your web browser) and persistent cookies
-        (stay on your device until you delete them) to:
+        (stay on your device until you {"delete"} them) to:
       </p>
       <ul>
         <li>Remember your preferences,</li>

@@ -11,15 +11,11 @@ import TestimonialsCarousel from "@/components/testimonials";
 import { fontWhisper } from "@/config/fonts";
 
 export default function Home() {
-  const serviceRef = useRef(null);
+  const serviceRef = useRef<HTMLElement>(null);
   const isInServiceView = useInView(serviceRef);
 
   const handleGetStarted = () => {
-    const services = document.getElementById("services");
-
-    if (services) {
-      services.scrollIntoView({ behavior: "smooth" });
-    }
+    serviceRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -43,12 +39,11 @@ export default function Home() {
         </Button>
       </section>
       <section
+        ref={serviceRef}
         className="flex flex-col items-center min-h-[60dvh] pt-16"
         id="services"
       >
-        <h3 ref={serviceRef} className="text-3xl md:text-5xl font-bold">
-          Our Services
-        </h3>
+        <h3 className="text-3xl md:text-5xl font-bold">Our Services</h3>
         <ServiceCards inView={isInServiceView} />
       </section>
       <section className="py-16 min-h-[60dvh] max-w-dvh" id="testimonials">

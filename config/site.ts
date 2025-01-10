@@ -107,7 +107,7 @@ export const testimonials = [
     name: "Olivia Park",
     username: "astrolivi",
     comment: "Totally spot-on reading. Will be back for more guidance!",
-    dateOfComment: "2025-01-09",
+    dateOfComment: "2024-12-09",
     rating: 5,
     avatar_url: "https://i.pravatar.cc/150",
   },
@@ -116,7 +116,7 @@ export const testimonials = [
     username: "tarot_mel",
     comment:
       "Incredibly insightful astrologer. The daily readings have become my ritual!",
-    dateOfComment: "2025-01-11",
+    dateOfComment: "2024-12-11",
     rating: 5,
     avatar_url: "https://i.pravatar.cc/150",
   },

@@ -138,7 +138,7 @@ export default function Page() {
         You agree to defend, indemnify, and hold harmless us and our officers,
         directors, employees, and agents from and against any and all claims,
         damages, liabilities, losses, and expenses (including reasonable
-        attorneys’ fees) arising out of or relating to your breach of these
+        attorneys&apos; fees) arising out of or relating to your breach of these
         Terms or your misuse of the Site.
       </p>
       <hr />
@@ -146,13 +146,14 @@ export default function Page() {
       <p>
         Governing Law: These Terms and any dispute or claim arising out of or in
         connection with them shall be governed by and construed in accordance
-        with the laws of [Your Jurisdiction], without regard to conflict of law
-        provisions.
+        with the laws of Maricopa County, Arizona, United States of America,
+        without regard to conflict of law provisions.
       </p>
       <p>
         Dispute Resolution: Any dispute arising under these Terms will be
-        resolved exclusively in the courts located in [Your Jurisdiction], and
-        you consent to the personal jurisdiction of such courts.
+        resolved exclusively in the courts located in Maricopa County, Arizona,
+        United States of America, and you consent to the personal jurisdiction
+        of such courts.
       </p>
       <hr />
       <h3>12. Termination</h3>
