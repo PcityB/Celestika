@@ -1,4 +1,5 @@
 import { parseTranslateValue } from "./parseTransLateValue";
 import { extractRotateValue } from "./extractRotateValue";
+import { getCardImgPath } from "./getCardImg";
 
-export { parseTranslateValue, extractRotateValue };
+export { parseTranslateValue, extractRotateValue, getCardImgPath };
