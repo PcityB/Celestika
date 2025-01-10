@@ -1,5 +1,8 @@
-export enum DecksEnum {
-  inspired = "rw_inspired_art",
+export enum DeckFileFolder {
+  inspired = "rws_inspired_art_deck",
+  neon = "neon_art_deck",
+  glass = "stained_glass_deck",
+  rws = "rider_waite_smith_deck",
 }
 
 export enum Arcana {
