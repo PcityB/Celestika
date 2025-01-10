@@ -11,7 +11,6 @@ type CardProps = {
 };
 
 const PlacementCard = ({ label, targetId, idList }: CardProps) => {
-
   const targetRef = useRef<HTMLDivElement>(null);
   const snapGuidelines = {
     top: true,
@@ -21,8 +20,6 @@ const PlacementCard = ({ label, targetId, idList }: CardProps) => {
     center: true,
     middle: true,
   };
-
-  console.log("idList", idList);
 
   return (
     <Fragment>
@@ -47,6 +44,7 @@ const PlacementCard = ({ label, targetId, idList }: CardProps) => {
         className={`target ${targetId} w-[40px] bg-primary hover:bg-primary-200 cursor-pointer transition-colors duration-300 ease-in-out`}
       >
         <Image alt="card" src="/images/tarot/decks/art/card_back.webp" />
+        <p className="text-xs text-center">{label}</p>
       </div>
     </Fragment>
   );
