@@ -30,14 +30,14 @@ export default function ServiceCards({ inView }: { inView: boolean }) {
               <motion.div
                 key={index + service.title}
                 animate={{ opacity: 1, rotateX: 0 }}
+                aria-label={`${service.title} service card`}
                 className="flex gap-4 bg-neutral-800 p-4 md:p-6 items-center rounded-lg transition-all cursor-pointer border hover:border-primary"
                 initial={{ opacity: 0, rotateX: 90 }}
                 role="listitem"
-                aria-label="${service.title} service card"
                 tabIndex={index}
                 transition={{ duration: 0.5, delay: Math.min(index * 0.2, 0.8) }}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === '') {
+                  if (e.key === "Enter" || e.key === "") {
                     //handler function / ;ogic
                   }
                 }}

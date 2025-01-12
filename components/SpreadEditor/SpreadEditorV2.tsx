@@ -1,34 +1,31 @@
 "use client";
 
-import { useEffect, useState, useRef, Fragment } from "react";
-import { Button } from "@nextui-org/button";
-import { Image } from "@nextui-org/image";
-import Moveable from "react-moveable";
-import clsx from "clsx";
+import type {
+  SpreadEditorPlacementCard,
+  UiVisibility,
+} from "@/types/spread-editor.types";
 
-import {
-  parseTranslateValue,
-  extractRotateValue,
-  getCardImgPath,
-} from "@/utils";
+import { useEffect, useState, useRef } from "react";
 
-import { LocalStorageKeys } from "@/enums/storage.enums";
-
-import "@/styles/moveable-override.css";
+import PlacementAreaV2 from "./PlacementAreaV2";
 import EditorMenu from "./EditorMenu";
 
+import { parseTranslateValue, extractRotateValue } from "@/utils";
+import { LocalStorageKeys } from "@/enums/storage.enums";
+import ModalComponent from "../modal";
+
+type Cards = SpreadEditorPlacementCard[];
+
 export default function SpreadEditorV2() {
-  const boundRef = useRef<HTMLDivElement>(null);
-  const [cards, setCards] = useState<
-    {
-      id: string;
-      position: string;
-      label: string;
-      rotate: string;
-      seq: number;
-    }[]
-  >([]);
-  const [targetList, setTargetList] = useState<string[]>([]);
+  const [cards, setCards] = useState<Cards>([]);
+  const [uiVisibility, setUiVisibility] = useState<UiVisibility>({
+    guidelines: true,
+    labels: false,
+    rotation: false,
+    sequence: false,
+  });
+  const [selectedCard, setSelectedCard] = useState<string | null>(null);
+  const resetRef = useRef<HTMLButtonElement>(null);
 
   //On Mount
   useEffect(() => {
@@ -41,35 +38,35 @@ export default function SpreadEditorV2() {
     }
   }, []);
 
-  // On Update
-  useEffect(() => {
-    const list = cards.map((card) => `.${card.id}`);
-
-    setTargetList(list);
-  }, [cards]);
-
-  const snapGuidelines = {
-    top: true,
-    right: true,
-    bottom: true,
-    left: true,
-    center: true,
-    middle: true,
+  const handleCardSelection = (id: string | null, target: HTMLElement) => {
+    setSelectedCard(id);
+    if (target instanceof HTMLElement) {
+      console.log("target", target);
+      target.focus();
+    }
   };
-
   const addCard = () => {
     const id = cards.length + 1;
+    const offset = 5 * cards.length;
 
+    setSelectedCard(`card-${id}`);
     setCards((prev) => [
       ...prev,
       {
         id: `card-${id}`,
-        position: "50%, 50%",
+        position: `${offset}px, ${offset}px`,
         rotate: "0deg",
         label: `#${id}`,
         seq: id,
       },
     ]);
+  };
+
+  const toggleUi = (key: string) => {
+    setUiVisibility((prev) => ({
+      ...prev,
+      [key]: !prev[key as keyof UiVisibility],
+    }));
   };
 
   const handlePositionChange = ({
@@ -102,96 +99,50 @@ export default function SpreadEditorV2() {
     });
   };
 
-  const resetSpreadPositions = () => {
+  const editLabels = async () => {};
+
+  const resetCards = async () => {
+    const userConfirm = await new Promise<boolean>((resolve) => {
+      if (resetRef.current) {
+        resetRef.current.onclick = () => {
+          resolve(true);
+        };
+        resetRef.current.click();
+      }
+    });
+
+    // await user input from #file ModalComponent
     localStorage.removeItem(LocalStorageKeys.spreadPositionsAutoSave);
     setCards([]);
   };
 
   return (
-    <div>
+    <div id="spread-editor-root">
       <div>
+        <ModalComponent
+          headerText="Confirmation"
+          hidden={true}
+          refObj={resetRef}
+          triggerBtnText="reset"
+        >
+          <p>Are you sure you want to reset?</p>
+        </ModalComponent>
         <div className="w-[400px] mx-auto">
           <div className="container border my-2">
-            <EditorMenu />
-            <div
-              ref={boundRef}
-              className={clsx(
-                "relative",
-                "w-[400px] h-[400px] mx-auto",
-                "border-2 border-primary bg-neutral-700"
-              )}
-            >
-              {cards.length > 0 &&
-                cards.map((card) => (
-                  <Fragment key={card.id}>
-                    <div
-                      className={clsx(
-                        `card ${card.id} override`,
-                        "w-[40px] bg-primary",
-                        "cursor-move"
-                      )}
-                      id={card.id}
-                      style={{
-                        transform: `translate(${card.position}) rotate(${card.rotate})`,
-                      }}
-                    >
-                      <Image
-                        alt="Card Back"
-                        className=""
-                        radius="none"
-                        src={getCardImgPath("card_back")}
-                      />
-                    </div>
-                    <Moveable
-                      bounds={{
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        position: "css",
-                      }}
-                      draggable={true}
-                      elementGuidelines={[...targetList]}
-                      hideDefaultLines={true}
-                      individualGroupable={true}
-                      isDisplayGridGuidelines={true}
-                      isDisplayInnerSnapDigit={true}
-                      rotatable={true}
-                      snapDirections={snapGuidelines}
-                      snapGridHeight={10}
-                      snapGridWidth={10}
-                      snapRotataionThreshold={30}
-                      snapRotationDegrees={[0, 90, 180, 270]}
-                      snappable={true}
-                      target={`.${card.id}`}
-                      throttleDrag={1}
-                      onDrag={handlePositionChange}
-                      onRender={(e) => {
-                        if (e.cssText !== "") {
-                          const positionData = e.cssText;
-                          const { x, y } = parseTranslateValue(positionData);
-                          const rotation = extractRotateValue(positionData);
-                          const update = cards.map((c) =>
-                            c.id === card.id
-                              ? {
-                                  ...c,
-                                  position: `${x}px, ${y}px`,
-                                  rotate: `${rotation}deg`,
-                                }
-                              : c
-                          );
-
-                          localStorage.setItem(
-                            LocalStorageKeys.spreadPositionsAutoSave,
-                            JSON.stringify(update)
-                          );
-                        }
-                      }}
-                      onRotate={handlePositionChange}
-                    />
-                  </Fragment>
-                ))}
-            </div>
+            <EditorMenu
+              addCard={addCard}
+              editLabels={editLabels}
+              resetSpread={resetCards}
+              toggleUi={toggleUi}
+              uiVisibility={uiVisibility}
+            />
+            <PlacementAreaV2
+              cards={cards}
+              handlePositionChange={handlePositionChange}
+              handleSelection={handleCardSelection}
+              selectedCard={selectedCard}
+              uiVisibility={uiVisibility}
+            />
           </div>
         </div>
       </div>

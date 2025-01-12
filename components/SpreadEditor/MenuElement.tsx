@@ -1,36 +1,17 @@
-import React, { Key } from "react";
+import React, { Key, useEffect } from "react";
 import {
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
-  // DropdownSection,
   DropdownItem,
 } from "@nextui-org/dropdown";
 import { Button } from "@nextui-org/button";
 import { SharedSelection } from "@nextui-org/system";
 import { Icon } from "@iconify/react";
+import clsx from "clsx";
 
-type MenuItems = {
-  itemLabel: string;
-  actionKey: string;
-  className?: string;
-  color?: "primary" | "secondary" | "success" | "warning" | "danger";
-  startIcon?: React.ReactNode;
-  endIcon?: React.ReactNode;
-};
-
-export interface MenuElementProps {
-  triggerLabel: string;
-  menuItems: MenuItems[];
-  actionTrigger?: (key: Key) => void | keyof Key;
-  ariaLabel: string;
-  size?: "sm" | "md" | "lg";
-  variant?: "solid" | "bordered" | "flat" | "light" | "faded" | "shadow";
-  color?: "primary" | "secondary" | "success" | "warning" | "danger";
-  className?: string;
-  selectionMode?: "single" | "multiple";
-  selectedKeys?: string[];
-}
+import { MenuElementProps } from "@/types/prop.types";
+import { ActionKey } from "@/enums/editor.enums";
 
 export default function MenuElement({
   triggerLabel,
@@ -42,8 +23,24 @@ export default function MenuElement({
   color,
   className,
   selectionMode,
+  uiVisibility,
 }: MenuElementProps) {
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([""]));
+
+  useEffect(() => {
+    if (uiVisibility) {
+      const { guidelines, labels, rotation, sequence } = uiVisibility;
+
+      setSelectedKeys(
+        new Set([
+          guidelines ? ActionKey.TOGGLE_GUIDELINES : "",
+          labels ? ActionKey.TOGGLE_LABELS : "",
+          rotation ? ActionKey.TOGGLE_ROTATION : "",
+          sequence ? ActionKey.TOGGLE_SEQUENCE : "",
+        ]),
+      );
+    }
+  }, [uiVisibility]);
 
   const handleSelectionChange = (newSelection: SharedSelection) => {
     if (typeof newSelection === "object") {
@@ -66,9 +63,10 @@ export default function MenuElement({
     <Dropdown>
       <DropdownTrigger>
         <Button
-          className={className}
+          className={clsx("blur:border-primary", className)}
           color={color}
           size={size}
+          tabIndex={0}
           variant={variant}
         >
           {triggerLabel}
@@ -81,12 +79,12 @@ export default function MenuElement({
         variant={variant}
         onAction={(key: Key) => {
           if (actionTrigger) {
-            actionTrigger(key);
+            actionTrigger(key as ActionKey);
           }
         }}
         onSelectionChange={handleSelectionChange}
       >
-        {menuItems.map((item) => (
+        {menuItems.map((item, index) => (
           <DropdownItem
             key={item.actionKey}
             className={item.className}
@@ -94,13 +92,16 @@ export default function MenuElement({
             endContent={
               item.endIcon ? (
                 item.endIcon
-              ) : selectedValueArray.includes(item.actionKey) ? (
+              ) : selectedValueArray.includes(
+                  item.actionKey as unknown as string,
+                ) ? (
                 <Icon icon="mdi:check-bold" />
               ) : (
                 item.endIcon
               )
             }
             startContent={item.startIcon}
+            tabIndex={index + 1}
           >
             {item.itemLabel}
           </DropdownItem>

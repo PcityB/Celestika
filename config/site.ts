@@ -6,6 +6,9 @@ import {
   ZodiacStarIcon,
   TreeIcon,
 } from "@/components/icons";
+import { MenuElementProps } from "@/types/prop.types";
+import { ActionKey } from "@/enums/editor.enums";
+
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
@@ -121,3 +124,87 @@ export const testimonials = [
     avatar_url: "https://i.pravatar.cc/150",
   },
 ];
+
+const sharedSettings: Partial<MenuElementProps> = {
+  size: "md",
+  variant: "light",
+  className: "hover:theme-gradient",
+};
+
+export type EditorControlsConfig = {
+  controls: {
+    menu: {
+      file: MenuElementProps;
+      edit: MenuElementProps;
+      view: MenuElementProps;
+    };
+  };
+};
+
+export const editorConfig: EditorControlsConfig = {
+  controls: {
+    menu: {
+      file: {
+        triggerLabel: "Spread",
+        ariaLabel: "spread menu items",
+        ...sharedSettings,
+        menuItems: [
+          {
+            itemLabel: "Reset",
+            actionKey: ActionKey.RESET_SPREAD,
+          },
+          {
+            itemLabel: "Load",
+            actionKey: ActionKey.LOAD_SPREAD,
+          },
+          {
+            itemLabel: "Save",
+            actionKey: ActionKey.SAVE_SPREAD,
+          },
+          {
+            itemLabel: "Exit",
+            actionKey: ActionKey.EXIT,
+          },
+        ],
+      },
+      edit: {
+        triggerLabel: "Cards",
+        ariaLabel: "cards menu items",
+        ...sharedSettings,
+        menuItems: [
+          {
+            itemLabel: "Add",
+            actionKey: ActionKey.ADD_CARD,
+          },
+          {
+            itemLabel: "Edit",
+            actionKey: ActionKey.EDIT_LABELS,
+          },
+        ],
+      },
+      view: {
+        triggerLabel: "View",
+        ariaLabel: "editor view menu",
+        ...sharedSettings,
+        menuItems: [
+          {
+            itemLabel: "show guidelines",
+            actionKey: ActionKey.TOGGLE_GUIDELINES,
+          },
+          // {
+          //   itemLabel: "show rotation controls",
+          //   actionKey: ActionKey.TOGGLE_ROTATION,
+          // },
+          {
+            itemLabel: "show card labels",
+            actionKey: ActionKey.TOGGLE_LABELS,
+          },
+          {
+            itemLabel: "show card sequence",
+            actionKey: ActionKey.TOGGLE_SEQUENCE,
+          },
+        ],
+      },
+    },
+  },
+};
