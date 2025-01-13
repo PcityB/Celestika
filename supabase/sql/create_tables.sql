@@ -18,6 +18,24 @@ COMMIT;
 
 BEGIN;
 
+CREATE TYPE card_arcana AS ENUM ('major', 'minor');
+
+CREATE TABLE Cards (
+  card_id SERIAL PRIMARY KEY,          -- Unique identifier for the card
+  slug_id VARCHAR(50) NOT NULL UNIQUE,
+  name VARCHAR(255) NOT NULL,     -- Name of the card (e.g., "The Fool")
+  arcana card_arcana NOT NULL,    -- Major or Minor arcana
+  upright_description TEXT,       -- Description of the card in the upright position
+  reversed_description TEXT,      -- Description of the card in the reversed position
+  upright_keywords TEXT
+  reversed_keywords TEXT
+  fools_journey TEXT
+)
+
+COMMIT;
+
+BEGIN;
+
 CREATE TABLE Readings (
     reading_id SERIAL PRIMARY KEY,  -- Unique identifier for each reading
     user_id INT NOT NULL,          -- Foreign key to Users table
@@ -40,7 +58,8 @@ CREATE TABLE Reading_Cards (
 CREATE TABLE Spreads (
     spread_id SERIAL PRIMARY KEY,     -- Unique identifier for each spread
     user_id INT NOT NULL,             -- Foreign key to Users table (creator of the spread)
-    name VARCHAR(255) NOT NULL,       -- Name of the spread
+    name VARCHAR(255) NOT NULL,
+    private BOOLEAN NOT NULL       -- Name of the spread
     description TEXT,                 -- Description of the spread
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Creation timestamp
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
