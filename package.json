@@ -23,6 +23,7 @@
 		"@nextui-org/listbox": "2.3.8",
 		"@nextui-org/modal": "^2.2.7",
 		"@nextui-org/navbar": "2.2.7",
+		"@nextui-org/react": "^2.6.11",
 		"@nextui-org/snippet": "2.2.9",
 		"@nextui-org/switch": "2.2.7",
 		"@nextui-org/system": "2.4.5",
