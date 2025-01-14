@@ -61,6 +61,7 @@ export const Logo = () => {
 export default function NavigationBar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
+
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen}>
       <NavbarContent>
@@ -90,11 +91,22 @@ export default function NavigationBar() {
         )}
       </NavbarContent>
       <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
-          <Link href="#">Login</Link>
+        <NavbarItem className="hidden md:flex">
+          <Link
+            // className={clsx(pathname === "/login" ? "hidden" : "")}
+            href="/login"
+          >
+            Login
+          </Link>
         </NavbarItem>
         <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="flat">
+          <Button
+            as={Link}
+            // className={clsx(pathname === "/login/signup" ? "hidden" : "")}
+            color="primary"
+            href="/login/signup"
+            variant="flat"
+          >
             Sign Up
           </Button>
         </NavbarItem>

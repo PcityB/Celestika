@@ -13,16 +13,16 @@ import {
 import { login } from "./actions";
 
 export default function Page() {
-    const [submitted, setSubmitted] = React.useState<Record<
-      string,
-      FormDataEntryValue
-    > | null>(null);
+  const [submitted, setSubmitted] = React.useState<Record<
+    string,
+    FormDataEntryValue
+  > | null>(null);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(e.currentTarget));
 
     setSubmitted(data);
-  }
+  };
 
   return (
     <div className="flex justify-center items-center pt-16">
@@ -56,7 +56,9 @@ export default function Page() {
               <Button className="w-full" color="primary">
                 Login
               </Button>
-              {submitted && (<code>you submitted{JSON.stringify(submitted)}</code>)}
+              {submitted && (
+                <code>you submitted{JSON.stringify(submitted)}</code>
+              )}
             </CardFooter>
           </Form>
         </CardBody>

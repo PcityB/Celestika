@@ -21,7 +21,7 @@ export const siteConfig = {
     {
       title: "Tarot Reading",
       description:
-        "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+        "On Demand Tarot Readings. Get insights into your past, present, and future.",
       icon: DrawCardIcon,
       disabled: false,
       slug: "/reading",
@@ -29,7 +29,7 @@ export const siteConfig = {
     {
       title: "Tarot Spreads",
       description:
-        "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+        "Discover and create custom tarot spreads for any situation or question.",
       icon: CardSpreadIcon,
       disabled: false,
       slug: "/spreads",
@@ -37,7 +37,7 @@ export const siteConfig = {
     {
       title: "Tarot Explorer",
       description:
-        "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+        "Explore the mystical world of tarot cards. Learn about the cards and their meanings.",
       icon: SkullCardsIcon,
       disabled: false,
       slug: "/explorer",
@@ -45,7 +45,7 @@ export const siteConfig = {
     {
       title: "Tarot Journal",
       description:
-        "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+        "Keep track of your readings and insights. Reflect on your journey.",
       icon: ClosedBookIcon,
       disabled: false,
       slug: "/journal",
@@ -53,15 +53,14 @@ export const siteConfig = {
     {
       title: "Horoscopes",
       description:
-        "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+        "Get daily, weekly, and monthly horoscopes. Discover what the stars have in store for you.",
       icon: ZodiacStarIcon,
       disabled: true,
       slug: "/horoscopes",
     },
     {
       title: "Natal Charts",
-      description:
-        "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+      description: "Get your birth chart and learn about your astrological",
       icon: TreeIcon,
       disabled: true,
       slug: "/charts",
@@ -85,7 +84,7 @@ export const testimonials = [
     comment:
       "Easy to use website with loads of useful astrology info. Learned a lot!",
     dateOfComment: "2025-01-04",
-    rating: 4,
+    rating: 5,
     avatar_url: "https://i.pravatar.cc/150",
   },
   {
@@ -103,7 +102,7 @@ export const testimonials = [
     comment:
       "Accurate cosmic insights, but the site layout could be more user-friendly.",
     dateOfComment: "2025-01-07",
-    rating: 4,
+    rating: 5,
     avatar_url: "https://i.pravatar.cc/150",
   },
   {

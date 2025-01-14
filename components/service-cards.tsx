@@ -35,7 +35,10 @@ export default function ServiceCards({ inView }: { inView: boolean }) {
                 initial={{ opacity: 0, rotateX: 90 }}
                 role="listitem"
                 tabIndex={index}
-                transition={{ duration: 0.5, delay: Math.min(index * 0.2, 0.8) }}
+                transition={{
+                  duration: 0.5,
+                  delay: Math.min(index * 0.2, 0.8),
+                }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === "") {
                     //handler function / ;ogic
