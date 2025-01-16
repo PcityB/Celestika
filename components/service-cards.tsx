@@ -48,7 +48,10 @@ export default function ServiceCards({ inView }: { inView: boolean }) {
                     }
                   }}
                 >
-                  <Link href={`${service.slug}`}>
+                  <Link
+                    className="flex gap-4 items-center"
+                    href={`${service.slug}`}
+                  >
                     <div>
                       <Icon size={56} />
                     </div>
@@ -66,7 +69,7 @@ export default function ServiceCards({ inView }: { inView: boolean }) {
                       >
                         {service.disabled ? "Coming soon" : "New"}
                       </Chip>
-                      <p className="text-sm md:text-md">
+                      <p className="text-sm md:text-md pt-2">
                         {service.description}
                       </p>
                     </div>

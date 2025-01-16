@@ -7,7 +7,6 @@ import { Providers } from "./providers";
 import NavigationBar from "@/components/navigationbar";
 import { siteConfig } from "@/config/site";
 import { fontGothic } from "@/config/fonts";
-
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
@@ -36,7 +35,12 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning lang="en">
       <head />
-      <body className={clsx("bg-background antialiased relative", fontGothic.className)}>
+      <body
+        className={clsx(
+          "bg-background antialiased relative",
+          fontGothic.className
+        )}
+      >
         <Providers
           themeProps={{ attribute: "class", defaultTheme: "new-dark" }}
         >
