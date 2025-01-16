@@ -17,6 +17,8 @@ import clsx from "clsx";
 import { siteConfig } from "@/config/site";
 import { fontWhisper } from "@/config/fonts";
 
+import { createClient } from "@/utils/supabase/client";
+
 export const Logo = () => {
   return (
     <svg
@@ -60,7 +62,22 @@ export const Logo = () => {
 
 export default function NavigationBar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const supabase = createClient();
+  const [user, setUser] = React.useState<null | unknown>();
 
+  React.useEffect(() => {
+    (async () => {
+      const user = await supabase.auth.getUser();
+
+      if (user) {
+        setUser(user);
+      }
+      if (!user) {
+        setUser(null);
+      }
+    })();
+    console.log("🚀 ~ user:", user);
+  }, []);
 
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen}>

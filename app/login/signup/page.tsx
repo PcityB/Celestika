@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Form,
   Input,
@@ -9,19 +9,86 @@ import {
   CardHeader,
   CardFooter,
 } from "@nextui-org/react";
+import { useForm, useDebounce } from "@custom-react-hooks/all";
+
+import { signup } from "./actions";
+
+import { createClient } from "@/utils/supabase/client";
+
+export type FormValues = {
+  screen_name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
 
 export default function Page() {
-  const [submitted, setSubmitted] = React.useState<Record<
-    string,
-    FormDataEntryValue
-  > | null>(null);
+  const initValues = {
+    screen_name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  };
+  const [submitting, setSubmitting] = useState(false);
+  const [sceenNameDebounced, setScreenNameDebounced] = useState("");
+  const [submitResult, setSubmitResult] = useState("");
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const [updateScreenName] = useDebounce(
+    (val) => {
+      setScreenNameDebounced(val);
+    },
+    1000,
+    { maxWait: 5000 },
+  );
 
-    const data = Object.fromEntries(new FormData(e.currentTarget));
+  const handleChangeDebounced = (e: React.ChangeEvent<HTMLInputElement>) => {
+    updateScreenName(e.target.value);
+    handleChange(e);
+  };
 
-    setSubmitted(data);
+  const validate = (values: typeof initValues) => {
+    const errors: Record<string, string> = {};
+
+    if (values.screen_name.length < 3) {
+      errors.screen_name = "Screen name must be at least 3 characters long";
+    } else if (values.screen_name.length > 20) {
+      errors.screen_name = "Screen name cannot exceed 20 characters length";
+    } else {
+      const screenNameRegex = /^[a-zA-Z0-9_]+$/;
+
+      if (!screenNameRegex.test(values.screen_name)) {
+        errors.screen_name =
+          "Screen name can only contain letters, numbers, and underscores";
+      }
+    }
+    if (!values.email.includes("@")) {
+      errors.email = "Please enter a valid email";
+    }
+    if (values.password.length < 6) {
+      errors.password = "Password must be at least 6 characters long";
+    }
+    if (values.password !== values.confirmPassword) {
+      errors.confirmPassword = "Passwords do not match";
+    }
+
+    return errors;
+  };
+
+  const {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    resetForm,
+  } = useForm(initValues, validate);
+
+  const onSubmit = async () => {
+    setSubmitting(true);
+
+    await signup(values);
+    resetForm();
   };
 
   return (
@@ -29,68 +96,76 @@ export default function Page() {
       <Card className="w-full max-w-sm">
         <CardHeader className="flex justify-center">
           <h3 className="text-3xl">Sign Up</h3>
-          </CardHeader>
+        </CardHeader>
         <CardBody>
           <Form
             className="w-full max-w-xs mx-auto"
             validationBehavior="native"
-            onSubmit={onSubmit}
+            onSubmit={(e) => handleSubmit(e, onSubmit)}
           >
             <Input
               isRequired
               className="mb-4"
-              errorMessage="Please enter a valid name"
-              label="Username"
+              errorMessage={touched.screen_name && errors.screen_name}
+              label="Screen Name"
               labelPlacement="outside"
-              name="username"
+              name="screen_name"
               placeholder="Enter your username"
               type="text"
+              value={values.screen_name}
+              onBlur={handleBlur}
+              onChange={handleChangeDebounced}
             />
             <Input
               isRequired
               className="mb-4"
-              errorMessage="Please enter a valid email"
+              errorMessage={touched.email && errors.email}
               label="Email"
               labelPlacement="outside"
               name="email"
               placeholder="Enter your email"
               type="email"
+              value={values.email}
+              onBlur={handleBlur}
+              onChange={handleChange}
             />
             <Input
               isRequired
               className="mb-4"
-              errorMessage="Please enter a valid password"
+              errorMessage={touched.password && errors.password}
               label="Password"
               labelPlacement="outside"
               name="password"
               placeholder="Enter your password"
               type="password"
+              value={values.password}
+              onBlur={handleBlur}
+              onChange={handleChange}
             />
             <Input
               isRequired
               className="mb-4"
-              errorMessage="Please enter a valid password"
+              errorMessage={touched.confirmPassword && errors.confirmPassword}
               label="Confirm Password"
               labelPlacement="outside"
               name="confirmPassword"
               placeholder="Confirm your password"
               type="password"
+              value={values.confirmPassword}
+              onBlur={handleBlur}
+              onChange={handleChange}
             />
             <CardFooter className="flex justify-end">
               <Button
                 className="w-full"
                 color="primary"
+                isLoading={submitting}
                 type="submit"
                 variant="solid"
               >
                 Submit
               </Button>
             </CardFooter>
-            {submitted && (
-              <div className="text-small text-default-500">
-                You submitted: <code>{JSON.stringify(submitted)}</code>
-              </div>
-            )}
           </Form>
         </CardBody>
       </Card>
