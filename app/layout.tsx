@@ -8,6 +8,8 @@ import NavigationBar from "@/components/navigationbar";
 import { siteConfig } from "@/config/site";
 import { fontGothic } from "@/config/fonts";
 
+import Footer from "@/components/Footer";
+
 export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
@@ -34,14 +36,15 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning lang="en">
       <head />
-      <body className={clsx("bg-background antialiased", fontGothic.className)}>
+      <body className={clsx("bg-background antialiased relative", fontGothic.className)}>
         <Providers
           themeProps={{ attribute: "class", defaultTheme: "new-dark" }}
         >
           <NavigationBar />
-          <main className="container mx-auto max-w-7xl px-2 md:px-6 flex-grow">
+          <main className="container mx-auto max-w-7xl px-2 md:px-6 flex-grow min-h-[calc(100dvh-160px)]">
             {children}
           </main>
+          <Footer />
         </Providers>
       </body>
     </html>

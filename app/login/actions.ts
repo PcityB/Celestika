@@ -5,22 +5,22 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "@/utils/supabase/server";
 
-export async function login(formData: Record<string, string>) {
+export async function login(prevState: any, formData: FormData) {
   const supabase = await createClient();
 
   // type-casting here for convenience
   // in practice, you should validate your inputs
   const data = {
-    email: formData.email,
-    password: formData.password,
+    email: formData.get("email") as string,
+    password: formData.get("password") as string,
   };
 
   const { error } = await supabase.auth.signInWithPassword(data);
-  console.log("🚀 ~ login ~ error:", error);
 
   if (error) {
     return { message: "invalid credentails" };
   }
+
   revalidatePath("/", "layout");
   redirect("/");
 }
