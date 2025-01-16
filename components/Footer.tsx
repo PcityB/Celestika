@@ -1,11 +1,27 @@
+"use client";
+
 import clsx from "clsx";
 import { Link } from "@nextui-org/link";
+import { usePathname } from "next/navigation";
 
 import { fontWhisper } from "@/config/fonts";
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  const hideFooter = (path: string) => {
+    const regex = /^(\/|\/login|\/login\/signup)$/;
+
+    return regex.test(path);
+  };
+
   return (
-    <footer className="bg-neutral-800 border-t border-neutral-500">
+    <footer
+      className={clsx(
+        "bg-neutral-800 border-t border-neutral-500",
+        hideFooter(pathname) ? "hidden" : "",
+      )}
+    >
       <p className="text-center py-4">
         <span className={clsx(fontWhisper.className, "text-2xl")}>
           Mystical Realms

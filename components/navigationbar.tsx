@@ -1,6 +1,7 @@
 "use client";
 
 import React, { Fragment } from "react";
+import { usePathname } from "next/navigation";
 import {
   Navbar,
   NavbarBrand,
@@ -60,6 +61,8 @@ export const Logo = () => {
 };
 
 const AuthLinks = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
+  const pathname = usePathname();
+
   return (
     <Fragment>
       {isAuthenticated ? (
@@ -79,7 +82,7 @@ const AuthLinks = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
         <Fragment>
           <NavbarItem className="hidden md:flex">
             <Link
-              // className={clsx(pathname === "/login" ? "hidden" : "")}
+              className={clsx(pathname === "/login" ? "hidden" : "")}
               href="/login"
             >
               Login
@@ -88,7 +91,7 @@ const AuthLinks = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
           <NavbarItem>
             <Button
               as={Link}
-              // className={clsx(pathname === "/login/signup" ? "hidden" : "")}
+              className={clsx(pathname === "/login/signup" ? "hidden" : "")}
               color="primary"
               href="/login/signup"
               variant="flat"
@@ -109,6 +112,7 @@ export default function NavigationBar() {
     string,
     any
   >>();
+  const pathname = usePathname();
 
   React.useEffect(() => {
     (async () => {
@@ -124,7 +128,7 @@ export default function NavigationBar() {
         setCurrentUser(null);
       }
     })();
-  }, [document.location.pathname]);
+  }, [pathname, currentUser]);
 
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen}>

@@ -9,6 +9,7 @@ import {
   Button,
   Input,
   Alert,
+  Link,
 } from "@nextui-org/react";
 
 import { login } from "./actions";
@@ -54,7 +55,7 @@ export default function Page() {
               value={values.password}
               onChange={handleChange}
             />
-            <CardFooter>
+            <CardFooter className="flex-col">
               <Button
                 className="w-full"
                 color="primary"
@@ -63,6 +64,10 @@ export default function Page() {
               >
                 Login
               </Button>
+              <p className="text-center mt-4 text-sm">
+                Don&apos;t have an account? Sign up for one{" "}
+                <Link href="/login/signup">here</Link>
+              </p>
             </CardFooter>
           </Form>
         </CardBody>

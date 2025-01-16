@@ -715,37 +715,40 @@ export type Database = {
     Tables: {
       cards: {
         Row: {
-          arcana: string | null;
+          arcana_type: Database["public"]["Enums"]["arcana_type"] | null;
           fools_journey: string | null;
           id: number;
           rank_int: number | null;
           reversed_description: string | null;
           reversed_keywords: string | null;
           slug_id: string | null;
+          suit: Database["public"]["Enums"]["suit"] | null;
           title: string;
           upright_description: string | null;
           upright_keywords: string | null;
         };
         Insert: {
-          arcana?: string | null;
+          arcana_type?: Database["public"]["Enums"]["arcana_type"] | null;
           fools_journey?: string | null;
           id?: number;
           rank_int?: number | null;
           reversed_description?: string | null;
           reversed_keywords?: string | null;
           slug_id?: string | null;
+          suit?: Database["public"]["Enums"]["suit"] | null;
           title?: string;
           upright_description?: string | null;
           upright_keywords?: string | null;
         };
         Update: {
-          arcana?: string | null;
+          arcana_type?: Database["public"]["Enums"]["arcana_type"] | null;
           fools_journey?: string | null;
           id?: number;
           rank_int?: number | null;
           reversed_description?: string | null;
           reversed_keywords?: string | null;
           slug_id?: string | null;
+          suit?: Database["public"]["Enums"]["suit"] | null;
           title?: string;
           upright_description?: string | null;
           upright_keywords?: string | null;
@@ -775,7 +778,6 @@ export type Database = {
       };
       spread_placement_cards: {
         Row: {
-          author: string | null;
           created_at: string;
           id: number;
           label: string;
@@ -787,7 +789,6 @@ export type Database = {
           y_axis: number | null;
         };
         Insert: {
-          author?: string | null;
           created_at?: string;
           id?: number;
           label: string;
@@ -799,7 +800,6 @@ export type Database = {
           y_axis?: number | null;
         };
         Update: {
-          author?: string | null;
           created_at?: string;
           id?: number;
           label?: string;
@@ -811,13 +811,6 @@ export type Database = {
           y_axis?: number | null;
         };
         Relationships: [
-          {
-            foreignKeyName: "spread_placement_cards_author_fkey";
-            columns: ["author"];
-            isOneToOne: false;
-            referencedRelation: "profiles";
-            referencedColumns: ["screen_name"];
-          },
           {
             foreignKeyName: "spread_placement_cards_spread_id_fkey";
             columns: ["spread_id"];
@@ -870,7 +863,8 @@ export type Database = {
       [_ in never]: never;
     };
     Enums: {
-      [_ in never]: never;
+      arcana_type: "minor" | "major";
+      suit: "wands" | "cups" | "swords" | "pentacles";
     };
     CompositeTypes: {
       [_ in never]: never;
