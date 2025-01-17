@@ -1,0 +1,1 @@
+select slug_is, arcana, rank_int, upright_keywords, reversed_keywords, upright_description, reversed_description, fools_journey from table tarot_cards
