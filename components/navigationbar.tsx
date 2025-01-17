@@ -117,7 +117,7 @@ export default function NavigationBar() {
   React.useEffect(() => {
     (async () => {
       const { data: user, error } = await supabase.auth.getUser();
-
+      console.log('hit')
       if (error) {
         // throw new Error(`error: ${error}`);
       }

@@ -10,14 +10,11 @@ import { LocalStorageKeys } from "@/enums/storage.enums";
  * @returns The full path to the image file for the specified card or card back.
  */
 export const getCardImgPath = (namespace: TarotCardId | "card_back") => {
-  let deck = localStorage.getItem(
-    LocalStorageKeys.selectedDeck,
-  ) as DeckFileFolder;
+  // let deck = localStorage.getItem(
+  //   LocalStorageKeys.selectedDeck,
+  // ) as DeckFileFolder;
   const fileName: TarotCardImgFileName = `${namespace}.webp`;
-
-  if (deck === null) {
-    deck = DeckFileFolder.inspired;
-  }
+  let deck = DeckFileFolder.inspired;
 
   return `${tarotCardImgs.ROOT_PATH}/${deck}/${fileName}`;
 };

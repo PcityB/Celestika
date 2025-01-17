@@ -19,7 +19,7 @@ export default function Footer() {
     <footer
       className={clsx(
         "bg-neutral-800 border-t border-neutral-500",
-        hideFooter(pathname) ? "hidden" : "",
+        hideFooter(pathname) ? "" : "hidden",
       )}
     >
       <p className="text-center py-4">

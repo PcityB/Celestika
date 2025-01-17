@@ -21,6 +21,6 @@ export async function login(prevState: any, formData: FormData) {
     return { message: "invalid credentails" };
   }
 
-  revalidatePath("/", "layout");
-  redirect("/");
+  revalidatePath("/private/dashboard", "layout");
+  redirect("/private/dashboard");
 }
