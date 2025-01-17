@@ -39,3 +39,7 @@ next-env.d.ts
 public/svg/*
 
 temp/*
+
+# custom files
+.vscode
+mystical-realms-local.session.sql

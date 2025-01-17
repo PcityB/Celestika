@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { Fragment } from "react";
+import { usePathname } from "next/navigation";
 import {
   Navbar,
   NavbarBrand,
@@ -16,7 +17,6 @@ import clsx from "clsx";
 
 import { siteConfig } from "@/config/site";
 import { fontWhisper } from "@/config/fonts";
-
 import { createClient } from "@/utils/supabase/client";
 
 export const Logo = () => {
@@ -60,24 +60,75 @@ export const Logo = () => {
   );
 };
 
+const AuthLinks = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
+  const pathname = usePathname();
+
+  return (
+    <Fragment>
+      {isAuthenticated ? (
+        <Fragment>
+          <NavbarItem>
+            <Button
+              as={Link}
+              color="primary"
+              href="/auth/logout"
+              variant="solid"
+            >
+              Logout
+            </Button>
+          </NavbarItem>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <NavbarItem className="hidden md:flex">
+            <Link
+              className={clsx(pathname === "/login" ? "hidden" : "")}
+              href="/login"
+            >
+              Login
+            </Link>
+          </NavbarItem>
+          <NavbarItem>
+            <Button
+              as={Link}
+              className={clsx(pathname === "/login/signup" ? "hidden" : "")}
+              color="primary"
+              href="/login/signup"
+              variant="flat"
+            >
+              Sign Up
+            </Button>
+          </NavbarItem>
+        </Fragment>
+      )}
+    </Fragment>
+  );
+};
+
 export default function NavigationBar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const supabase = createClient();
-  const [user, setUser] = React.useState<null | unknown>();
+  const [currentUser, setCurrentUser] = React.useState<null | Record<
+    string,
+    any
+  >>();
+  const pathname = usePathname();
 
   React.useEffect(() => {
     (async () => {
-      const user = await supabase.auth.getUser();
-
+      const { data: user, error } = await supabase.auth.getUser();
+      console.log('hit')
+      if (error) {
+        // throw new Error(`error: ${error}`);
+      }
       if (user) {
-        setUser(user);
+        setCurrentUser(user);
       }
       if (!user) {
-        setUser(null);
+        setCurrentUser(null);
       }
     })();
-    console.log("🚀 ~ user:", user);
-  }, []);
+  }, [pathname, currentUser]);
 
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen}>
@@ -104,29 +155,15 @@ export default function NavigationBar() {
                 </Link>
               </NavbarItem>
             );
-          },
+          }
         )}
       </NavbarContent>
       <NavbarContent justify="end">
-        <NavbarItem className="hidden md:flex">
-          <Link
-            // className={clsx(pathname === "/login" ? "hidden" : "")}
-            href="/login"
-          >
-            Login
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Button
-            as={Link}
-            // className={clsx(pathname === "/login/signup" ? "hidden" : "")}
-            color="primary"
-            href="/login/signup"
-            variant="flat"
-          >
-            Sign Up
-          </Button>
-        </NavbarItem>
+        <AuthLinks
+          isAuthenticated={
+            currentUser?.user !== null && currentUser?.user !== undefined
+          }
+        />
       </NavbarContent>
       <NavbarMenu>
         {siteConfig.navMenuItems.map((item, index) => (

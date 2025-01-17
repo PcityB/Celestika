@@ -45,7 +45,7 @@ export default function TestimonialsCarousel() {
               key={index}
               className="embla__slide flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33%]"
             >
-              <div className="bg-neutral-800 p-4 md:p-6 lg:mx-4 rounded-lg">
+              <div className="bg-neutral-800 m-4 p-4 md:p-6 lg:mx-4 rounded-lg">
                 <User
                   avatarProps={{
                     src: `${testimonial.avatar_url}?u=${encodeURIComponent(testimonial.username)}`,
@@ -60,7 +60,7 @@ export default function TestimonialsCarousel() {
                 size={24}
                 value={testimonial.rating}
                 /> */}
-                <p>{testimonial.comment}</p>
+                <p className="mt-2">{testimonial.comment}</p>
               </div>
             </div>
           ))}

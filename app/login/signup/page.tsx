@@ -8,12 +8,12 @@ import {
   CardBody,
   CardHeader,
   CardFooter,
+  Link,
+  Checkbox,
 } from "@nextui-org/react";
 import { useForm, useDebounce } from "@custom-react-hooks/all";
 
 import { signup } from "./actions";
-
-import { createClient } from "@/utils/supabase/client";
 
 export type FormValues = {
   screen_name: string;
@@ -30,15 +30,14 @@ export default function Page() {
     confirmPassword: "",
   };
   const [submitting, setSubmitting] = useState(false);
-  const [sceenNameDebounced, setScreenNameDebounced] = useState("");
-  const [submitResult, setSubmitResult] = useState("");
+  const [userAgreement, setUserAgreement] = useState(false);
 
   const [updateScreenName] = useDebounce(
     (val) => {
-      setScreenNameDebounced(val);
+      console.log(val);
     },
     1000,
-    { maxWait: 5000 },
+    { maxWait: 5000 }
   );
 
   const handleChangeDebounced = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -155,16 +154,27 @@ export default function Page() {
               onBlur={handleBlur}
               onChange={handleChange}
             />
-            <CardFooter className="flex justify-end">
+            <Checkbox
+              className="mx-auto"
+              isSelected={userAgreement}
+              onValueChange={setUserAgreement}
+            >
+              I agree to <Link>Terms of Service</Link>
+            </Checkbox>
+            <CardFooter className="flex-col justify-end">
               <Button
                 className="w-full"
                 color="primary"
+                isDisabled={!userAgreement}
                 isLoading={submitting}
                 type="submit"
                 variant="solid"
               >
                 Submit
               </Button>
+              <p className="text-center mt-4 text-sm">
+                Already have an account? Sign in <Link href="\login">here</Link>
+              </p>
             </CardFooter>
           </Form>
         </CardBody>
