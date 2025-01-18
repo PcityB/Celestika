@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import { Link } from "@nextui-org/link";
+import { Link } from "@heroui/react";
 import { usePathname } from "next/navigation";
 
 import { fontWhisper } from "@/config/fonts";

@@ -4,9 +4,9 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-} from "@nextui-org/dropdown";
-import { Button } from "@nextui-org/button";
-import { SharedSelection } from "@nextui-org/system";
+  Button,
+} from "@heroui/react";
+import { SharedSelection } from "@heroui/system";
 import { Icon } from "@iconify/react";
 import clsx from "clsx";
 

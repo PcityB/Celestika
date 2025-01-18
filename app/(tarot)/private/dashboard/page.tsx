@@ -16,7 +16,7 @@ export default async function Page() {
   const cardImg = getCardImgPath(slug_id as TarotCardId);
 
   return (
-    <div className="basis-3/4 grow">
+    <div className="basis-3/4 justify-end flex grow">
       <CardOfTheDay cardImg={cardImg} title={title} />
     </div>
   );

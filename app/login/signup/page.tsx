@@ -10,7 +10,7 @@ import {
   CardFooter,
   Link,
   Checkbox,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useForm, useDebounce } from "@custom-react-hooks/all";
 
 import { signup } from "./actions";

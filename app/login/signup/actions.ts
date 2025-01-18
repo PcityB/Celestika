@@ -33,7 +33,9 @@ export async function signup(formValues: Record<string, string>) {
   redirect("/");
 }
 
-export async function checkScreenName(screenName: string): Promise<boolean | { error: string }> {
+export async function checkScreenName(
+  screenName: string,
+): Promise<boolean | { error: string }> {
   const supabase = await createClient();
 
   const { data, error } = await supabase

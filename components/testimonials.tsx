@@ -1,9 +1,9 @@
 "use client";
 import { useMemo, useEffect } from "react";
-import { User } from "@nextui-org/user";
+import { User } from "@heroui/react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import ReactStars from "react-stars";
+// import ReactStars from "react-stars";
 
 import { testimonials } from "@/config/site";
 
