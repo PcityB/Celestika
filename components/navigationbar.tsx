@@ -18,6 +18,7 @@ import clsx from "clsx";
 import { siteConfig } from "@/config/site";
 import { fontWhisper } from "@/config/fonts";
 import { createClient } from "@/utils/supabase/client";
+import AvatarMenu from "@/components/AvatarMenu";
 
 export const Logo = () => {
   return (
@@ -68,14 +69,7 @@ const AuthLinks = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
       {isAuthenticated ? (
         <Fragment>
           <NavbarItem>
-            <Button
-              as={Link}
-              color="primary"
-              href="/auth/logout"
-              variant="solid"
-            >
-              Logout
-            </Button>
+            <AvatarMenu />
           </NavbarItem>
         </Fragment>
       ) : (
@@ -117,7 +111,7 @@ export default function NavigationBar() {
   React.useEffect(() => {
     (async () => {
       const { data: user, error } = await supabase.auth.getUser();
-      console.log('hit')
+
       if (error) {
         // throw new Error(`error: ${error}`);
       }
@@ -139,9 +133,12 @@ export default function NavigationBar() {
         />
         <NavbarBrand>
           <Logo />
-          <p className={clsx(fontWhisper.className, "text-3xl pl-2")}>
+          <Link
+            className={clsx(fontWhisper.className, "text-3xl pl-2")}
+            href="/"
+          >
             Mystical Realms
-          </p>
+          </Link>
         </NavbarBrand>
       </NavbarContent>
 
