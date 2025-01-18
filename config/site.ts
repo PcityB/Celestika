@@ -207,3 +207,37 @@ export const editorConfig: EditorControlsConfig = {
     },
   },
 };
+
+export const dashboardLinks = [
+  {
+    name: "profile",
+    path: "/private/profile",
+    slug: "profile",
+    disabled: true,
+  },
+  {
+    name: "settings",
+    path: "/private/settings",
+    slug: "settings",
+    disabled: true,
+  },
+  {
+    name: "readings",
+    path: "/private/readings",
+    slug: "readings",
+    disabled: true,
+  },
+  {
+    name: "spreads",
+    path: "/private/spreads",
+    slug: "spreads",
+    disabled: true,
+  },
+  {
+    name: "journal",
+    path: "/private/journal",
+    slug: "journal",
+    disabled: true,
+  },
+  { name: "forums", path: "/private/forums", slug: "forums", disabled: true },
+];
