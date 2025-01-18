@@ -1,4 +1,4 @@
-import { Fragment, RefObject, useState } from "react";
+import { Fragment, RefObject } from "react";
 import clsx from "clsx";
 import {
   Modal,
@@ -7,8 +7,8 @@ import {
   ModalFooter,
   useDisclosure,
   ModalBody,
-} from "@nextui-org/modal";
-import { Button } from "@nextui-org/button";
+  Button,
+} from "@heroui/react";
 
 type Sizes =
   | "xs"

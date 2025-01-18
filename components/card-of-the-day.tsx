@@ -1,6 +1,6 @@
 "use client";
 import clsx from "clsx";
-import { Image } from "@nextui-org/react";
+import { Image } from "@heroui/react";
 
 import { fontWhisper } from "@/config/fonts";
 

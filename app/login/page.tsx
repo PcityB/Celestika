@@ -10,7 +10,7 @@ import {
   Input,
   Alert,
   Link,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 import { login } from "./actions";
 

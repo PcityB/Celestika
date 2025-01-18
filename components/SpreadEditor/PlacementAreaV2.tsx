@@ -1,8 +1,7 @@
 "use client";
 
 import { Fragment, useRef, useEffect, useState, SyntheticEvent } from "react";
-import { Image } from "@nextui-org/image";
-import { Badge } from "@nextui-org/badge";
+import { Image, Badge } from "@heroui/react";
 import Moveable from "react-moveable";
 import clsx from "clsx";
 

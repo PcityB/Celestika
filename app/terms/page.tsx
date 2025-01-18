@@ -1,4 +1,4 @@
-import { Link } from "@nextui-org/link";
+import { Link } from "@heroui/react";
 import "@/styles/legal.css";
 
 export default function Page() {

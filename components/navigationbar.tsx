@@ -10,9 +10,9 @@ import {
   NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
-} from "@nextui-org/navbar";
-import { Link } from "@nextui-org/link";
-import { Button } from "@nextui-org/button";
+  Link,
+  Button,
+} from "@heroui/react";
 import clsx from "clsx";
 
 import { siteConfig } from "@/config/site";
