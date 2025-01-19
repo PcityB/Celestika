@@ -1,3 +1,5 @@
+import { getProfile } from "./actions";
+
 import { getCardImgPath, shuffleCards, getTarotDeck } from "@/utils";
 // import { Database } from "@/types/database.types";
 import { type TarotCardId } from "@/types/tarot.types";

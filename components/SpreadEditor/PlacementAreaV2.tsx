@@ -155,6 +155,9 @@ export default function PlacementAreaV2({
                 }}
                 tabIndex={0}
                 onBlur={(e) => handleSelection(null, e.target as HTMLElement)}
+                onClick={(e) =>
+                  handleSelection(card.id, e.target as HTMLElement)
+                }
                 onDoubleClick={(e) => {
                   e.stopPropagation();
                   const target = e.target as HTMLElement;
@@ -173,12 +176,8 @@ export default function PlacementAreaV2({
                     greatGrandParent.focus();
                   }
                 }}
-                onClick={(e) =>
-                  handleSelection(card.id, e.target as HTMLElement)
-                }
                 onFocus={(e) => {
-                  console.log("focus", e.target, e.currentTarget)
-                  handleSelection(card.id, e.target as HTMLElement)
+                  handleSelection(card.id, e.target as HTMLElement);
                 }}
                 onKeyDown={keyEventHandler}
               >
