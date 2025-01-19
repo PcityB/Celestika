@@ -1,7 +1,9 @@
+import { RefObject, SyntheticEvent, useState } from "react";
 import { Divider } from "@heroui/divider";
 
 import MenuElement from "./MenuElement";
 
+import LabelEditor from "@/components/SpreadEditor/LabelEditor";
 import { editorConfig } from "@/config/site";
 import { ActionKey } from "@/enums/editor.enums";
 import { getToggleTarget } from "@/utils";
@@ -9,10 +11,14 @@ import { UiVisibility } from "@/types/spread-editor.types";
 
 interface Props {
   addCard: () => void;
-  editLabels: () => void;
+  editLabels: (
+    e: SyntheticEvent<HTMLButtonElement>,
+    ref: RefObject<HTMLFormElement>,
+  ) => void;
   resetSpread: () => void;
   toggleUi: (key: string) => void;
   uiVisibility: UiVisibility;
+  cardsLength: number;
 }
 
 export default function EditorMenu({
@@ -20,9 +26,14 @@ export default function EditorMenu({
   editLabels,
   resetSpread,
   toggleUi,
-  uiVisibility
+  uiVisibility,
+  cardsLength,
 }: Props) {
   const { file, edit, view } = editorConfig.controls.menu;
+  
+  const [isDrawOpen, setIsDrawOpen] = useState(false);
+
+  const toggleDrawer = () => setIsDrawOpen(!isDrawOpen);
 
   const actionTrigger = (actionKey: ActionKey) => {
     const uiTarget = getToggleTarget(actionKey);
@@ -32,7 +43,7 @@ export default function EditorMenu({
         addCard();
         break;
       case ActionKey.EDIT_LABELS:
-        editLabels();
+        toggleDrawer();
         break;
       case ActionKey.RESET_SPREAD:
         resetSpread();
@@ -66,6 +77,12 @@ export default function EditorMenu({
             uiVisibility={uiVisibility}
           />
           <Divider orientation="vertical" />
+          <LabelEditor
+            cardsLength={cardsLength}
+            isOpen={isDrawOpen}
+            localEdit={editLabels}
+            toggle={toggleDrawer}
+          />
         </div>
       </div>
     </div>

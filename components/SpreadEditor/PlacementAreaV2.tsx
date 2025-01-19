@@ -15,9 +15,19 @@ import { type SpreadEditorPlacementCard } from "@/types/spread-editor.types";
 
 import "@/styles/moveable-override.css";
 
+enum Keys {
+  ArrowUp = "ArrowUp",
+  ArrowRight = "ArrowRight",
+  ArrowDown = "ArrowDown",
+  ArrowLeft = "ArrowLeft",
+}
+
 interface Props {
   cards: SpreadEditorPlacementCard[];
-  handlePositionChange: (e: any) => void;
+  handlePositionChange: (obj: {
+    target: HTMLElement | SVGElement;
+    transform: string;
+  }) => void;
   handleSelection: (id: string | null, elem: HTMLElement) => void;
   selectedCard: string | null;
   uiVisibility: {
@@ -45,10 +55,49 @@ export default function PlacementAreaV2({
       setTargetList(list);
     }
   }, [cards]);
+
+  const positionTransformTranslate = ({
+    position,
+    x = 0,
+    y = 0,
+  }: {
+    position: string;
+    x?: number;
+    y?: number;
+  }) => {
+    const { x: currentX, y: currentY } = parseTranslateValue(position);
+    const rotation = extractRotateValue(position);
+
+    return `translate(${currentX + x}px, ${currentY + y}px) ${rotation ? `rotate(${rotation}deg)` : ""}`;
+  };
+
   const keyEventHandler = (event: SyntheticEvent<HTMLElement>) => {
     const target = event.target as HTMLElement;
-    console.info("event", event);
-  }
+    const keyEvent = event.nativeEvent as KeyboardEvent;
+    const position = target.style.transform;
+    let transform: string;
+
+    switch (keyEvent.key) {
+      case Keys.ArrowUp:
+        transform = positionTransformTranslate({ position, y: -1 });
+        handlePositionChange({ target, transform });
+        break;
+      case Keys.ArrowRight:
+        transform = positionTransformTranslate({ position, x: 1 });
+        handlePositionChange({ target, transform });
+        break;
+      case Keys.ArrowDown:
+        transform = positionTransformTranslate({ position, y: 1 });
+        handlePositionChange({ target, transform });
+        break;
+      case Keys.ArrowLeft:
+        transform = positionTransformTranslate({ position, x: -1 });
+        handlePositionChange({ target, transform });
+        break;
+      default:
+        break;
+    }
+  };
   const clickAwayCardSelector = (event: SyntheticEvent<HTMLElement>) => {
     const target = event.target as HTMLElement;
     const targetInfo = target.dataset.info;
@@ -76,7 +125,7 @@ export default function PlacementAreaV2({
         className={clsx(
           "relative",
           "w-[400px] h-[400px] mx-auto",
-          "border-2 border-primary bg-neutral-700",
+          "border-2 border-primary bg-neutral-700"
         )}
         data-info="placement-area"
         role="switch"
@@ -95,7 +144,7 @@ export default function PlacementAreaV2({
                   "focus:outline-secondary",
                   `card ${card.id} absolute`,
                   "w-[40px] bg-primary",
-                  "cursor-move",
+                  "cursor-move"
                 )}
                 data-info="placement-card"
                 data-target={card.id}
@@ -106,18 +155,34 @@ export default function PlacementAreaV2({
                 }}
                 tabIndex={0}
                 onBlur={(e) => handleSelection(null, e.target as HTMLElement)}
+                onDoubleClick={(e) => {
+                  e.stopPropagation();
+                  const target = e.target as HTMLElement;
+                  const parent = target.parentElement as HTMLElement;
+                  const grandParent = parent?.parentElement as HTMLElement;
+                  const greatGrandParent = grandParent?.parentElement as HTMLElement;
+
+                  if (greatGrandParent.id === document.activeElement?.id) {
+                    const transform = greatGrandParent.style.transform;
+                    const { x, y } = parseTranslateValue(transform);
+                    const rotation = extractRotateValue(transform);
+                    const newRotation = rotation < 90 ? 90 : 0;
+
+                    greatGrandParent.style.transform = `translate(${x}px, ${y}px) rotate(${newRotation}deg)`;
+                  } else {
+                    greatGrandParent.focus();
+                  }
+                }}
                 onClick={(e) =>
                   handleSelection(card.id, e.target as HTMLElement)
                 }
-                onFocus={(e) =>
+                onFocus={(e) => {
+                  console.log("focus", e.target, e.currentTarget)
                   handleSelection(card.id, e.target as HTMLElement)
-                }
-                onKeyDown={keyEventHandler}
-                onKeyUp={() => {
-                  console.info("key up");
                 }}
+                onKeyDown={keyEventHandler}
               >
-                <Badge isInvisible={!uiVisibility.sequence} content={card.seq}>
+                <Badge content={card.seq} isInvisible={!uiVisibility.sequence}>
                   <Image
                     alt="Card Back"
                     className={clsx("w-full h-full")}
@@ -165,12 +230,12 @@ export default function PlacementAreaV2({
                             position: `${x}px, ${y}px`,
                             rotate: `${rotation}deg`,
                           }
-                        : c,
+                        : c
                     );
 
                     localStorage.setItem(
                       LocalStorageKeys.spreadPositionsAutoSave,
-                      JSON.stringify(update),
+                      JSON.stringify(update)
                     );
                   }
                 }}

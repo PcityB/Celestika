@@ -48,12 +48,8 @@ export default function MenuElement({
 
       setSelectedKeys(new Set<string>(stringKeys));
     }
-    // handle other cases like "all"
   };
-  // const selectedValue = React.useMemo(
-  //   () => Array.from(selectedKeys).join(", ").replace(/_/g, ""),
-  //   [selectedKeys],
-  // );
+
   const selectedValueArray = React.useMemo(
     () => Array.from(selectedKeys),
     [selectedKeys],
