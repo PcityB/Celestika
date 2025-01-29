@@ -1,3 +1,5 @@
+"use server";
+
 import { createClient } from "./supabase/server";
 
 /**
@@ -8,7 +10,6 @@ import { createClient } from "./supabase/server";
  * @throws {Error} If there is an error fetching the tarot deck data.
  */
 export async function getTarotDeck() {
-  "use server";
   const supabase = await createClient();
 
   const { data, error } = await supabase.from("cards").select("*");

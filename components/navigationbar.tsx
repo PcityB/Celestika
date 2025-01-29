@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Fragment } from "react";
+import React, { Fragment, useMemo, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import {
   Navbar,
@@ -18,7 +18,9 @@ import clsx from "clsx";
 import { siteConfig } from "@/config/site";
 import { fontWhisper } from "@/config/fonts";
 import { createClient } from "@/utils/supabase/client";
+// import { useDbClient } from "@/lib/db/clientDb";
 import AvatarMenu from "@/components/AvatarMenu";
+// import { Database } from "@/types/database.types";
 
 export const Logo = () => {
   return (
@@ -100,20 +102,17 @@ const AuthLinks = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
 };
 
 export default function NavigationBar() {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const supabase = createClient();
-  const [currentUser, setCurrentUser] = React.useState<null | Record<
-    string,
-    any
-  >>();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const supabase = useMemo(() => createClient(), []);
+  const [currentUser, setCurrentUser] = useState<null | Record<string, any>>();
   const pathname = usePathname();
 
-  React.useEffect(() => {
+  useEffect(() => {
     (async () => {
       const { data: user, error } = await supabase.auth.getUser();
 
       if (error) {
-        // throw new Error(`error: ${error}`);
+        throw Error(`error: ${error}`);
       }
       if (user) {
         setCurrentUser(user);
@@ -122,7 +121,7 @@ export default function NavigationBar() {
         setCurrentUser(null);
       }
     })();
-  }, [pathname, currentUser]);
+  }, [pathname]);
 
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen}>
@@ -157,9 +156,7 @@ export default function NavigationBar() {
       </NavbarContent>
       <NavbarContent justify="end">
         <AuthLinks
-          isAuthenticated={
-            currentUser?.user !== null && currentUser?.user !== undefined
-          }
+          isAuthenticated={currentUser !== null && currentUser !== undefined}
         />
       </NavbarContent>
       <NavbarMenu>

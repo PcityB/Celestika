@@ -5,7 +5,7 @@ import type {
   UiVisibility,
 } from "@/types/spread-editor.types";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, SyntheticEvent, RefObject } from "react";
 
 import PlacementAreaV2 from "./PlacementAreaV2";
 import EditorMenu from "./EditorMenu";
@@ -17,9 +17,10 @@ import ModalComponent from "../modal";
 type Cards = SpreadEditorPlacementCard[];
 
 export default function SpreadEditorV2() {
+  const [spreadTitle, setSpreadTitle] = useState<string>("");
   const [cards, setCards] = useState<Cards>([]);
   const [uiVisibility, setUiVisibility] = useState<UiVisibility>({
-    guidelines: true,
+    guidelines: false,
     labels: false,
     rotation: false,
     sequence: false,
@@ -36,12 +37,21 @@ export default function SpreadEditorV2() {
     if (savedData) {
       setCards(JSON.parse(savedData));
     }
+  }, [spreadTitle]);
+
+  useEffect(() => {
+    const savedTitle = localStorage.getItem(
+      LocalStorageKeys.spreadDataAutoSave,
+    );
+
+    if (savedTitle) {
+      setSpreadTitle(savedTitle);
+    }
   }, []);
 
   const handleCardSelection = (id: string | null, target: HTMLElement) => {
     setSelectedCard(id);
     if (target instanceof HTMLElement) {
-      console.log("target", target);
       target.focus();
     }
   };
@@ -76,6 +86,7 @@ export default function SpreadEditorV2() {
     target: HTMLElement | SVGElement;
     transform: string;
   }) => {
+    console.log('handlePositionChage', target, transform)
     target.style.transform = transform;
     setCards((prev) => {
       if (prev.filter((card) => card.id === target.id).length > 0) {
@@ -99,7 +110,45 @@ export default function SpreadEditorV2() {
     });
   };
 
-  const editLabels = async () => {};
+  const editLabels = (
+    e: SyntheticEvent<HTMLButtonElement>,
+    ref: RefObject<HTMLFormElement>,
+  ) => {
+    if (ref.current) {
+      const formElems = ref.current.elements;
+      const update: { id: string; label: string }[] = [];
+      let title: string | undefined = undefined;
+
+      for (let i = 0; i < formElems.length; i++) {
+        const input = formElems[i] as HTMLInputElement;
+
+        if (input.name === "title") {
+          title = input.value;
+        } else {
+          update.push({ id: input.name, label: input.value });
+        }
+      }
+      if (title) {
+        setSpreadTitle(title);
+        localStorage.setItem(LocalStorageKeys.spreadDataAutoSave, title);
+      }
+      const updatedCopy = [...cards].map((c) => {
+        const match = update.find((u) => u.id === c.id);
+
+        if (match) {
+          return { ...c, label: match.label };
+        } else {
+          return c;
+        }
+      });
+
+      localStorage.setItem(
+        LocalStorageKeys.spreadPositionsAutoSave,
+        JSON.stringify(updatedCopy),
+      );
+      setCards(updatedCopy);
+    }
+  };
 
   const resetCards = async () => {
     const userConfirm = await new Promise<boolean>((resolve) => {
@@ -131,6 +180,7 @@ export default function SpreadEditorV2() {
           <div className="container border my-2">
             <EditorMenu
               addCard={addCard}
+              cardsLength={cards.length}
               editLabels={editLabels}
               resetSpread={resetCards}
               toggleUi={toggleUi}
