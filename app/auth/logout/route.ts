@@ -9,8 +9,11 @@ export async function GET(_request: NextRequest) {
   const { error } = await supabase.auth.signOut();
 
   if (error) {
-    return { message: "An error occurred while logging out" };
+    return new Response(JSON.stringify({ message: "An error occurred while logging out" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 
-  redirect("/login");
+  return redirect("/login");
 }
