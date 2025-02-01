@@ -1,5 +1,6 @@
 "use client";
 
+import React from 'react'; // Ensure React is imported
 import { Button } from "@nextui-org/react";
 
 type Props = {
@@ -11,47 +12,47 @@ const dashboardLinks = [
     name: "profile",
     path: "/private/profile",
     slug: "profile",
-    disabled: true,
+    disabled: false,
   },
   {
     name: "settings",
     path: "/private/settings",
     slug: "settings",
-    disabled: true,
+    disabled: false,
   },
   {
     name: "readings",
     path: "/private/readings",
     slug: "readings",
-    disabled: true,
+    disabled: false,
   },
   {
     name: "spreads",
     path: "/private/spreads",
     slug: "spreads",
-    disabled: true,
+    disabled: false,
   },
   {
     name: "journal",
     path: "/private/journal",
     slug: "journal",
-    disabled: true,
+    disabled: false,
   },
-  { name: "forums", path: "/private/forums", slug: "forums", disabled: true },
+  { name: "forums", path: "/private/forums", slug: "forums", disabled: false },
 ];
 
 export default function Layout({ children }: Props) {
   return (
-    <div className="flex pt-14">
+    <div className="flex flex-col pt-14"> {/* Changed to flex-col for vertical layout */}
       <aside className="basis-1/4 shrink">
-        <ul className="space-y-4">
+        <ul className="flex space-x-4">
           {dashboardLinks.map((link) => (
             <li key={link.slug}>
               <Button
                 className="w-full text-center p-2 hover:bg-primary text-xl"
                 href={link.path}
                 variant="bordered"
-
+                disabled={link.disabled}
               >
                 {link.name}
               </Button>
@@ -59,7 +60,9 @@ export default function Layout({ children }: Props) {
           ))}
         </ul>
       </aside>
-      {children}
+      <div className="flex-grow"> {/* Added wrapper for children */}
+        {children}
+      </div>
     </div>
   );
 }

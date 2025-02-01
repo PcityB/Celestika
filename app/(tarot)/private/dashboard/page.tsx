@@ -1,5 +1,4 @@
 import { getCardImgPath, shuffleCards, getTarotDeck } from "@/utils";
-// import { Database } from "@/types/database.types";
 import { type TarotCardId } from "@/types/tarot.types";
 import CardOfTheDay from "@/components/card-of-the-day";
 
@@ -16,7 +15,7 @@ export default async function Page() {
   const cardImg = getCardImgPath(slug_id as TarotCardId);
 
   return (
-    <div className="basis-3/4 grow">
+    <div className="flex justify-center"> {/* Centering the content */}
       <CardOfTheDay cardImg={cardImg} title={title} />
     </div>
   );
